@@ -5,7 +5,7 @@ import Head from 'next/head';
  */
 function MainLayout(props) {
     return (
-        <div>
+        <div className="h-100">
             <Head>
                 <title>{props.title || 'Digital Identity'}</title>
             </Head>
