@@ -1,0 +1,3 @@
+[submodule "nextjslib"]
+	path = nextjslib
+	url = https://github.com/conradkoh/nextjslib.git
