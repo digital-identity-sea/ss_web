@@ -8,66 +8,59 @@ import OutlinedButton from '../nextjslib/components/button/OutlinedButton';
 import withForm from '../nextjslib/hoc/withForm';
 import * as UserController from '../controllers/user';
 const FORM_KEYS = {
-    FULL_NAME: 'full_name',
-    DATE_OF_BIRTH: 'date_of_birth',
-    EMAIL: 'email',
-    PHONE_MOBILE: 'phone_mobile',
-    ENCRYPTION_KEY: 'encryption_key',
+    EMAIL: {
+        key: 'email',
+        displayName: 'Email',
+    },
+    ENCRYPTION_KEY: {
+        key: 'encryptionKey',
+        displayName: 'Encryption Key (64 Hexadecimal Characters)',
+    },
 };
-const { FULL_NAME, DATE_OF_BIRTH, EMAIL, PHONE_MOBILE, ENCRYPTION_KEY } = FORM_KEYS;
+const { EMAIL, ENCRYPTION_KEY } = FORM_KEYS;
+const PAGE_TITLE = 'Digital Identity | Authentication';
+const BUTTON_LABEL_DECRYPT_PROFILE = 'Decrypt Profile';
 /**
  * @param {IndexPageProps} props
  */
 function IndexPage(props) {
     const form = props.form;
-    const createUserProfile = async () => {
+    const decryptProfile = async () => {
         const isValid = await form.validate();
         if (isValid) {
-            await UserController.uploadUserProfile(form.formData);
+            await UserController.decryptProfile(form.formData);
         }
     };
     const generateKey = async () => {
         //TODO: Implement generate key method
         const encryptionKey = await UserController.generateEncryptionKey();
-        await form.setFieldValue(ENCRYPTION_KEY, encryptionKey);
+        await form.setFieldValue(ENCRYPTION_KEY.key, encryptionKey);
     };
     return (
-        <MainLayout title="Digital Identity | Register">
-            <HeaderToolbar title="Digital Identity | Register" />
+        <MainLayout title={PAGE_TITLE}>
+            <HeaderToolbar title={PAGE_TITLE} />
             <div className="h-100 d-flex align-items-center justify-content-center">
                 <div className="container-fluid">
                     <div className="row d-flex justify-content-center">
                         <div className="col-12 col-md-6 col-xl-3">
-                            <div className="d-flex justify-content-center">
-                                <ProfilePicture imgSrc="" size={300} />
-                            </div>
-                            <TextField label="Full Name" onChange={form.handleChange(FULL_NAME)} {...form.fields[FULL_NAME]} />
                             <TextField
-                                autocomplete="bday"
-                                label="Date of Birth (DD/MM/YYYY)"
-                                onChange={form.handleChange(DATE_OF_BIRTH)}
-                                {...form.fields[DATE_OF_BIRTH]}
+                                autocomplete="email"
+                                label={EMAIL.displayName}
+                                onChange={form.handleChange(EMAIL.key)}
+                                {...form.fields[EMAIL.key]}
                             />
-                            <TextField autocomplete="email" label="Email" onChange={form.handleChange(EMAIL)} {...form.fields[EMAIL]} />
-                            <TextField label="Mobile Number" onChange={form.handleChange(PHONE_MOBILE)} {...form.fields[PHONE_MOBILE]} />
-                            <div className="d-flex">
-                                <div className="flex-grow-1 mr-2">
-                                    <TextField
-                                        label="Encryption Key (64 Hexadecimal Characters)"
-                                        onChange={form.handleChange(ENCRYPTION_KEY)}
-                                        {...form.fields[ENCRYPTION_KEY]}
-                                    />
-                                </div>
-                                <div className="d-flex flex-column">
-                                    <div className="flex-grow-1" />
-                                    <OutlinedButton color="secondary" label="Generate" onClick={generateKey} />
-                                </div>
-                            </div>
+                            <TextField
+                                label={ENCRYPTION_KEY.displayName}
+                                onChange={form.handleChange(ENCRYPTION_KEY.key)}
+                                {...form.fields[ENCRYPTION_KEY.key]}
+                            />
                             <br />
                             <br />
-                            <div className="d-flex justify-content-center">
+                            <br />
+                            <br />
+                            <div className="d-flex justify-content-end">
                                 <div className="" />
-                                <FlatButton label="Create Profile" onClick={createUserProfile} />
+                                <FlatButton label={BUTTON_LABEL_DECRYPT_PROFILE} onClick={decryptProfile} />
                             </div>
                         </div>
                     </div>
@@ -78,11 +71,8 @@ function IndexPage(props) {
 }
 export default withForm(IndexPage, {
     validations: {
-        [FULL_NAME]: (formData, val) => (val ? '' : 'Full name name cannot be empty'),
-        [DATE_OF_BIRTH]: (formData, val) => (val ? '' : 'Date of Birth cannot be empty'),
-        [EMAIL]: (formData, val) => (val ? '' : 'Email cannot be empty'),
-        [PHONE_MOBILE]: (formData, val) => (val ? '' : 'Mobile number cannot be empty'),
-        [ENCRYPTION_KEY]: (formData, val) => (val ? '' : 'Encryption key cannot be empty'),
+        [EMAIL.key]: (formData, val) => (val ? '' : 'Email cannot be empty'),
+        [ENCRYPTION_KEY.key]: (formData, val) => (val ? '' : 'Encryption key cannot be empty'),
     },
 });
 /**

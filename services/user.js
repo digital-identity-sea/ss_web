@@ -19,7 +19,23 @@ export async function generateEncryptionKey() {
 }
 
 /**
+ * Fetch the decrypted user profile
+ * @param {DecryptInfo} decryptInfo
+ */
+export async function decryptProfile(decryptInfo) {
+    const url = `${API_URL}/profile/decrypt`;
+    const response = await doPost(url, decryptInfo);
+    return response.data;
+}
+
+/**
  * @typedef ProfileProps
  * @property {string} full_name
  * @property {string} date_of_birth
+ */
+
+/**
+ * @typedef DecryptInfo
+ * @property {string} email
+ * @property {string} encryptionKey
  */
