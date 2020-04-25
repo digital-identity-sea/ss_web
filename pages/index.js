@@ -4,12 +4,20 @@ import HeaderToolbar from '../components/layout/HeaderToolbar';
 import ProfilePicture from '../components/profile/ProfilePicture';
 import TextField from '../nextjslib/components/input/TextField';
 import FlatButton from '../nextjslib/components/button/FlatButton';
+import OutlinedButton from '../nextjslib/components/button/OutlinedButton';
 import withForm from '../nextjslib/hoc/withForm';
+import * as UserController from '../controllers/user';
 /**
  * @param {IndexPageProps} props
  */
 function IndexPage(props) {
     const form = props.form;
+    const createUserProfile = async () => {
+        await UserController.uploadUserProfile(form.formData);
+    };
+    const generateKey = async () => {
+        //TODO: Implement generate key method
+    };
     return (
         <MainLayout title="Digital Identity | Register">
             <HeaderToolbar title="Digital Identity | Register" />
@@ -37,8 +45,14 @@ function IndexPage(props) {
                                 </div>
                                 <div className="d-flex flex-column">
                                     <div className="flex-grow-1" />
-                                    <FlatButton color="secondary" label="Generate" />
+                                    <OutlinedButton color="secondary" label="Generate" onClick={generateKey} />
                                 </div>
+                            </div>
+                            <br />
+                            <br />
+                            <div className="d-flex justify-content-center">
+                                <div className="" />
+                                <FlatButton label="Create Profile" onClick={createUserProfile} />
                             </div>
                         </div>
                     </div>
