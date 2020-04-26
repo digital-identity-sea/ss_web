@@ -2,6 +2,7 @@ import * as React from 'react';
 import TextField from '../../nextjslib/components/input/TextField';
 import FlatButton from '../../nextjslib/components/button/FlatButton';
 import withForm from '../../nextjslib/hoc/withForm';
+import { isHex } from '../../lib/encryption';
 const FORM_KEYS = {
     EMAIL: {
         key: 'email',
@@ -80,7 +81,18 @@ class DecryptProfileForm extends React.Component {
 export default withForm(DecryptProfileForm, {
     validations: {
         [EMAIL.key]: (formData, val) => (val ? '' : 'Email cannot be empty'),
-        [ENCRYPTION_KEY.key]: (formData, val) => (val ? '' : 'Encryption key cannot be empty'),
+        [ENCRYPTION_KEY.key]: (formData, val) => {
+            if (!val) {
+                return 'Encryption key cannot be empty';
+            }
+            if (`${val}`.length !== 64) {
+                return 'Encryption key must be 64 character hexadecimal string';
+            }
+            if (!isHex(val)) {
+                return 'Only hexadecimal characters are allowed';
+            }
+            return '';
+        },
     },
 });
 /**

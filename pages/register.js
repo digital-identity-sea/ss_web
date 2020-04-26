@@ -9,6 +9,7 @@ import withForm from '../nextjslib/hoc/withForm';
 import { PROFILE_FORM_KEYS } from '../constants/profile';
 import * as UserController from '../controllers/user';
 import * as UIHelper from '../nextjslib/helpers/ui';
+import { isHex } from '../lib/encryption';
 const { FULL_NAME, DATE_OF_BIRTH, EMAIL, PHONE_MOBILE, ENCRYPTION_KEY } = PROFILE_FORM_KEYS;
 const PAGE_TITLE = 'Digital Identity | Register';
 const BUTTON_LABEL_GENERATE = 'Generate';
@@ -96,7 +97,18 @@ export default withForm(IndexPage, {
         [DATE_OF_BIRTH.key]: (formData, val) => (val ? '' : 'Date of Birth cannot be empty'),
         [EMAIL.key]: (formData, val) => (val ? '' : 'Email cannot be empty'),
         [PHONE_MOBILE.key]: (formData, val) => (val ? '' : 'Mobile number cannot be empty'),
-        [ENCRYPTION_KEY.key]: (formData, val) => (val ? '' : 'Encryption key cannot be empty'),
+        [ENCRYPTION_KEY.key]: (formData, val) => {
+            if (!val) {
+                return 'Encryption key cannot be empty';
+            }
+            if (`${val}`.length !== 64) {
+                return 'Encryption key must be 64 character hexadecimal string';
+            }
+            if (!isHex(val)) {
+                return 'Only hexadecimal characters are allowed';
+            }
+            return '';
+        },
     },
 });
 /**
