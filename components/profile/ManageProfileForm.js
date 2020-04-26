@@ -11,7 +11,7 @@ const BUTTON_LABEL_GRANT_ACCESS = 'Grant Access';
  * @param {ManageProfileFormProps} props
  */
 function ManageProfileForm(props) {
-    const { fullName, dateOfBirth, email, phoneMobile } = props;
+    const { fullName, dateOfBirth, email, phoneMobile, onGrantAccess } = props;
 
     const [dialogState, setDialogState] = React.useState({ isOpen: false });
     const openDialog = () => {
@@ -31,6 +31,7 @@ function ManageProfileForm(props) {
             ...dialogState,
             isOpen: false,
         });
+        onGrantAccess(formData);
     };
     return (
         <OutlinedCard title={<div className="pl-3 pt-3 pr-3">{CARD_TITLE}</div>}>
@@ -54,4 +55,5 @@ export default ManageProfileForm;
  * @property {string} [dateOfBirth]
  * @property {string} [email]
  * @property {string} [phoneMobile]
+ * @property {function} [onGrantAccess]
  */

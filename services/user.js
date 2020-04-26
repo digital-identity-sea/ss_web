@@ -29,13 +29,32 @@ export async function decryptProfile(decryptInfo) {
 }
 
 /**
+ * Fetch the decrypted user profile
+ * @param {ProfileProps} profile
+ * @param {GrantConfiguration} configuration
+ */
+export async function grantAccess(profile, configuration) {
+    const url = `${API_URL}/profile/grant-access`;
+    const response = await doPost(url, { ...profile, ...configuration });
+    return response.data;
+}
+
+/**
  * @typedef ProfileProps
- * @property {string} full_name
- * @property {string} date_of_birth
+ * @property {string} fullName
+ * @property {string} dateOfBirth
+ * @property {string} email
+ * @property {string} phoneMobile
  */
 
 /**
  * @typedef DecryptInfo
  * @property {string} email
  * @property {string} encryptionKey
+ */
+
+/**
+ * @typedef GrantConfiguration
+ * @property {string} expiryDate
+ * @property {boolean} deleteAfterAccessed
  */
