@@ -7,11 +7,8 @@
 ## Installation
 
 -   Run `npm install` to install dependencies
+-   Run `git submodule init; git submodule update` to install git submodules
 -   Run `npm run dev` to start the server
-
-## Testing
-
--   Run `npm run test` to run the full test suite
 
 ## Planned Features (Not Implemented Yet)
 
