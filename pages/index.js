@@ -27,7 +27,8 @@ function IndexPage(props) {
         });
     };
     const grantAccess = async (configuration) => {
-        const access = await UserController.grantAccess(profile, configuration);
+        const { isLoaded, ...profileData } = profile;
+        const access = await UserController.grantAccess(profileData, configuration);
         const accessGrant = {
             ...access,
             url: `${config.WEB_ROOT_URL}/access/${encodeURIComponent(access.accessGrantId)}`,
