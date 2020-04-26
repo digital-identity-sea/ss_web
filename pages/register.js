@@ -6,30 +6,9 @@ import TextField from '../nextjslib/components/input/TextField';
 import FlatButton from '../nextjslib/components/button/FlatButton';
 import OutlinedButton from '../nextjslib/components/button/OutlinedButton';
 import withForm from '../nextjslib/hoc/withForm';
+import { PROFILE_FORM_KEYS } from '../constants/profile';
 import * as UserController from '../controllers/user';
-const FORM_KEYS = {
-    FULL_NAME: {
-        key: 'fullName',
-        displayName: 'Full Name',
-    },
-    DATE_OF_BIRTH: {
-        key: 'dateOfBirth',
-        displayName: 'Date Of Birth (DD/MM/YYYY)',
-    },
-    EMAIL: {
-        key: 'email',
-        displayName: 'Email',
-    },
-    PHONE_MOBILE: {
-        key: 'phoneMobile',
-        displayName: 'Mobile Number',
-    },
-    ENCRYPTION_KEY: {
-        key: 'encryptionKey',
-        displayName: 'Encryption Key (64 Hexadecimal Characters)',
-    },
-};
-const { FULL_NAME, DATE_OF_BIRTH, EMAIL, PHONE_MOBILE, ENCRYPTION_KEY } = FORM_KEYS;
+const { FULL_NAME, DATE_OF_BIRTH, EMAIL, PHONE_MOBILE, ENCRYPTION_KEY } = PROFILE_FORM_KEYS;
 const PAGE_TITLE = 'Digital Identity | Register';
 const BUTTON_LABEL_GENERATE = 'Generate';
 const BUTTON_LABEL_CREATE_PROFILE = 'Create Profile';

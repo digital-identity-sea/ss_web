@@ -1,40 +1,27 @@
 import * as React from 'react';
 import MainLayout from '../components/layout/MainLayout';
 import HeaderToolbar from '../components/layout/HeaderToolbar';
-import ProfilePicture from '../components/profile/ProfilePicture';
-import TextField from '../nextjslib/components/input/TextField';
-import FlatButton from '../nextjslib/components/button/FlatButton';
-import OutlinedButton from '../nextjslib/components/button/OutlinedButton';
-import withForm from '../nextjslib/hoc/withForm';
 import * as UserController from '../controllers/user';
-const FORM_KEYS = {
-    EMAIL: {
-        key: 'email',
-        displayName: 'Email',
-    },
-    ENCRYPTION_KEY: {
-        key: 'encryptionKey',
-        displayName: 'Encryption Key (64 Hexadecimal Characters)',
-    },
-};
-const { EMAIL, ENCRYPTION_KEY } = FORM_KEYS;
+import DecryptProfileForm from '../components/profile/DecryptProfileForm';
+import ManageProfileForm from '../components/profile/ManageProfileForm';
 const PAGE_TITLE = 'Digital Identity | Authentication';
-const BUTTON_LABEL_DECRYPT_PROFILE = 'Decrypt Profile';
 /**
  * @param {IndexPageProps} props
  */
 function IndexPage(props) {
-    const form = props.form;
-    const decryptProfile = async () => {
-        const isValid = await form.validate();
-        if (isValid) {
-            await UserController.decryptProfile(form.formData);
-        }
-    };
-    const generateKey = async () => {
-        //TODO: Implement generate key method
-        const encryptionKey = await UserController.generateEncryptionKey();
-        await form.setFieldValue(ENCRYPTION_KEY.key, encryptionKey);
+    const [profile, setProfile] = React.useState({
+        dateOfBirth: null,
+        email: null,
+        fullName: null,
+        phoneMobile: null,
+        isLoaded: false,
+    });
+    const decryptProfile = async (formData) => {
+        const profile = await UserController.decryptProfile(formData);
+        setProfile({
+            ...profile,
+            isLoaded: true,
+        });
     };
     return (
         <MainLayout title={PAGE_TITLE}>
@@ -43,25 +30,8 @@ function IndexPage(props) {
                 <div className="container-fluid">
                     <div className="row d-flex justify-content-center">
                         <div className="col-12 col-md-6 col-xl-3">
-                            <TextField
-                                autocomplete="email"
-                                label={EMAIL.displayName}
-                                onChange={form.handleChange(EMAIL.key)}
-                                {...form.fields[EMAIL.key]}
-                            />
-                            <TextField
-                                label={ENCRYPTION_KEY.displayName}
-                                onChange={form.handleChange(ENCRYPTION_KEY.key)}
-                                {...form.fields[ENCRYPTION_KEY.key]}
-                            />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <div className="d-flex justify-content-end">
-                                <div className="" />
-                                <FlatButton label={BUTTON_LABEL_DECRYPT_PROFILE} onClick={decryptProfile} />
-                            </div>
+                            {!profile.isLoaded && <DecryptProfileForm decryptProfile={decryptProfile} />}
+                            {profile.isLoaded && <ManageProfileForm {...profile} />}
                         </div>
                     </div>
                 </div>
@@ -69,15 +39,7 @@ function IndexPage(props) {
         </MainLayout>
     );
 }
-export default withForm(IndexPage, {
-    validations: {
-        [EMAIL.key]: (formData, val) => (val ? '' : 'Email cannot be empty'),
-        [ENCRYPTION_KEY.key]: (formData, val) => (val ? '' : 'Encryption key cannot be empty'),
-    },
-});
+export default IndexPage;
 /**
- * @typedef {WithFormHOCProps} IndexPageProps
- */
-/**
- * @typedef {import('../nextjslib/hoc/withForm').WithFormHOCProps} WithFormHOCProps
+ * @typedef {*} IndexPageProps
  */
