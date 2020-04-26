@@ -15,6 +15,7 @@
 
 ## Planned Features (Not Implemented Yet)
 
+-   Handling of error states
 -   Completely delete user profile
 -   Manage list of shares and revoke access immediately
 -   Support for uploading file as resume

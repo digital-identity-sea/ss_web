@@ -9,7 +9,7 @@ function MainLayout(props) {
             <Head>
                 <title>{props.title || 'Digital Identity'}</title>
             </Head>
-            <div>{props.children}</div>
+            <div className="h-100">{props.children}</div>
         </div>
     );
 }

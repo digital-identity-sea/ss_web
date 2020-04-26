@@ -38,7 +38,7 @@ function IndexPage(props) {
     return (
         <MainLayout title={PAGE_TITLE}>
             <HeaderToolbar title={PAGE_TITLE} />
-            <div className="h-100 d-flex align-items-center justify-content-center flex-column">
+            <div className="h-100 d-flex justify-content-center">
                 <div className="container-fluid">
                     <div className="row d-flex justify-content-center">
                         <div className="col-12 col-md-6 col-xl-3">
