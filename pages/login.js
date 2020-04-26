@@ -5,14 +5,12 @@ import * as UserController from '../controllers/user';
 import DecryptProfileForm from '../components/profile/DecryptProfileForm';
 import ManageProfileForm from '../components/profile/ManageProfileForm';
 import { getConfig } from '../config/index';
-import RaisedButton from '../nextjslib/components/button/RaisedButton';
-import FlatButton from '../nextjslib/components/button/FlatButton';
-const PAGE_TITLE = 'Digital Identity';
+const PAGE_TITLE = 'Digital Identity | Login';
 const config = getConfig();
 /**
  * @param {IndexPageProps} props
  */
-function IndexPage(props) {
+function LoginPage(props) {
     const [profile, setProfile] = React.useState({
         dateOfBirth: null,
         email: null,
@@ -40,22 +38,18 @@ function IndexPage(props) {
     return (
         <MainLayout title={PAGE_TITLE}>
             <HeaderToolbar title={PAGE_TITLE} />
-            <div className="h-100">
-                <br />
-                <div style={{ height: '40%', backgroundColor: '#e4e4e4' }}>
-                    <div className="d-flex flex-column h-100">
-                        <div className="h-100 d-flex flex-column">
-                            <div className="d-flex justify-content-center align-items-center flex-grow-1">
-                                <img src="/logo.png" />
-                            </div>
-                            <div className="d-flex justify-content-center p-3">
-                                <FlatButton
-                                    label={
-                                        <a style={{ color: 'white' }} href="/register">
-                                            Register Now
-                                        </a>
-                                    }
-                                />
+            <div className="h-100 d-flex justify-content-center">
+                <div className="container-fluid">
+                    <div className="row d-flex justify-content-center">
+                        <div className="col-12 col-md-6 col-xl-3">
+                            {!profile.isLoaded && <DecryptProfileForm decryptProfile={decryptProfile} />}
+                            {profile.isLoaded && <ManageProfileForm {...profile} onGrantAccess={grantAccess} />}
+                            <br />
+                            <div className="p-2">
+                                {accessGrants.length > 0 && <div>Share URL</div>}
+                                {accessGrants.map((accessGrant, idx) => (
+                                    <AccessGrantItem key={idx} idx={idx} {...accessGrant} />
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -64,7 +58,7 @@ function IndexPage(props) {
         </MainLayout>
     );
 }
-export default IndexPage;
+export default LoginPage;
 /**
  * @typedef {*} IndexPageProps
  */

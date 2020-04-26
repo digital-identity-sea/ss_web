@@ -8,7 +8,8 @@ const PAGE_TITLE = 'Digital Identity | View Profile';
  * @param {AccessPageProps} props
  */
 function AccessPage(props) {
-    const profile = props.profile;
+    const { error, profile } = props;
+
     return (
         <MainLayout title={PAGE_TITLE}>
             <HeaderToolbar title={PAGE_TITLE} />
@@ -16,7 +17,12 @@ function AccessPage(props) {
                 <div className="container-fluid">
                     <div className="row d-flex justify-content-center">
                         <div className="col-12 col-md-6 col-xl-3">
-                            <ViewProfileForm {...profile} />
+                            {!error && <ViewProfileForm {...profile} />}
+                            {error && (
+                                <div>
+                                    <div>{error}</div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -25,19 +31,22 @@ function AccessPage(props) {
     );
 }
 export default AccessPage;
+
 /**
  * @typedef AccessPageProps
  * @property {string} [accessGrantId]
  * @property {*} [profile]
+ * @property {string} [error]
  */
 
 export async function getServerSideProps(context) {
     const { accessGrantId } = context.query;
-    const profile = await getProfileFromGrant(accessGrantId);
+    const { error, ...profile } = await getProfileFromGrant(accessGrantId);
     return {
         props: {
-            accessGrantId,
-            profile,
+            accessGrantId: accessGrantId || null,
+            error: error || null,
+            profile: profile || null,
         },
     };
 }

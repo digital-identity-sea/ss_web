@@ -16,3 +16,11 @@ body,
     border-radius: 150px;
     background-color: #cac7c7;
 }
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration-line: none;
+}

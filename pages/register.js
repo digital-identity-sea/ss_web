@@ -8,6 +8,7 @@ import OutlinedButton from '../nextjslib/components/button/OutlinedButton';
 import withForm from '../nextjslib/hoc/withForm';
 import { PROFILE_FORM_KEYS } from '../constants/profile';
 import * as UserController from '../controllers/user';
+import * as UIHelper from '../nextjslib/helpers/ui';
 const { FULL_NAME, DATE_OF_BIRTH, EMAIL, PHONE_MOBILE, ENCRYPTION_KEY } = PROFILE_FORM_KEYS;
 const PAGE_TITLE = 'Digital Identity | Register';
 const BUTTON_LABEL_GENERATE = 'Generate';
@@ -20,7 +21,14 @@ function IndexPage(props) {
     const createUserProfile = async () => {
         const isValid = await form.validate();
         if (isValid) {
-            await UserController.uploadUserProfile(form.formData);
+            let confirm = await UIHelper.alertConfirm({
+                title: 'Are you sure?',
+                text: 'Please ensure that you have saved your encryption key. Press confirm to continue.',
+            });
+            if (confirm) {
+                await UserController.uploadUserProfile(form.formData);
+                window.location.href = '/login';
+            }
         }
     };
     const generateKey = async () => {
