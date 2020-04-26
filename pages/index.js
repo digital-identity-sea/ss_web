@@ -16,7 +16,7 @@ function IndexPage(props) {
         email: null,
         fullName: null,
         phoneMobile: null,
-        isLoaded: true,
+        isLoaded: false,
     });
     const [accessGrants, setAccessGrants] = React.useState([]);
     const decryptProfile = async (formData) => {
