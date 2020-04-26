@@ -20,3 +20,14 @@ export const PROFILE_FORM_KEYS = {
         displayName: 'Encryption Key (64 Hexadecimal Characters)',
     },
 };
+
+export const GRANT_ACCESS_FORM_KEYS = {
+    EXPIRY_DATE: {
+        key: 'expiryDate',
+        displayName: 'Expiry Date',
+    },
+    DELETE_AFTER_ACCESSED: {
+        key: 'deleteAfterAccessed',
+        displayName: 'Delete after accessed',
+    },
+};
